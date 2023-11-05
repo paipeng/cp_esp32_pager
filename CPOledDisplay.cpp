@@ -19,6 +19,11 @@ void CPOledDisplay::init() {
 
   //u8g2.setFont(u8g2_font_wqy12_t_chinese3);  // use wqy chinese2 for all the glyphs of "你好世界"
   display.setFontDirection(0);
+
+  display.drawBox(0, 0, 128, 32);
+  display.sendBuffer();
+  delay(2000);
+
 #else
   display.init();//初始化UI
   display.flipScreenVertically();//垂直翻转屏幕设置
@@ -30,7 +35,7 @@ void CPOledDisplay::init() {
 void CPOledDisplay::setStatus(String text) {
 #if USE_U8G2
   display.clearBuffer();
-  display.setCursor(0, 10);
+  display.setCursor(0, 20);
   display.print(text);    // Chinese "Hello World" 
   display.sendBuffer();
 #else
@@ -44,7 +49,7 @@ void CPOledDisplay::setStatus(String text) {
 void CPOledDisplay::updatePagerMessage(String sender, String receiver, String message, String textPixelBase64, int textCount) {
 #if USE_U8G2
   display.clearBuffer();
-  display.setCursor(0, 10);
+  display.setCursor(0, 24);
   display.print(message);    // Chinese "Hello World" 
   display.sendBuffer();
 #else
