@@ -3,14 +3,18 @@
 
 #include "CPOledDisplay.h"
 #include "CPIoTMqtt.h"
-
 #include "mqtt_const.h"
+#include "CPButton.h"
 
 #include <SD.h>
 #define SDCARA_CS           0
 
+#define CP_GPIO_BEEP 18
+
+
 CPOledDisplay display;
 CPIoTMqtt mqtt;
+CPButton button;
 
 void mqtt_callback_display(String text) {
   display.setStatus(text);
@@ -30,13 +34,26 @@ void sdcard_init() {
     delay(2000);
   }
 }
+
+void beep() {
+  digitalWrite(CP_GPIO_BEEP, HIGH); // turn on
+  delay(60);//延时200ms
+  digitalWrite(CP_GPIO_BEEP, LOW); // turn on
+  delay(60);//延时200ms
+}
+
 void setup(){
   delay(2000);
   
   Serial.begin(115200);
   Serial.setDebugOutput(true);
-  Serial.println("init display...");
 
+  pinMode(CP_GPIO_BEEP, OUTPUT);       // set ESP32 pin to output mode
+  beep();
+
+  button.init();
+  
+  Serial.println("init display...");
   display.init();
 
   //sdcard_init();
@@ -51,4 +68,8 @@ void setup(){
 void loop(){
   // clear the display
   mqtt.loop();
+  int b = button.readButton();
+  if (b != 0) {
+    beep();
+  }
 }
