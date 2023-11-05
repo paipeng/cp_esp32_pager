@@ -59,6 +59,8 @@ void setup(){
 
   //sdcard_init();
   delay(1000);
+  display.setStatus("你好 CP IoT==========");
+  delay(2000);
 
   mqtt.addDisplayCallback(&mqtt_callback_display);
   mqtt.addPagerCallback(&mqtt_callback_pager_message);
