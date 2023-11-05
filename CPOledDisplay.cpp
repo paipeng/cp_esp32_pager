@@ -3,10 +3,11 @@
 
 CPOledDisplay::CPOledDisplay(): 
 #if USE_U8G2
-display(U8G2_R0, /*clock=*/SCL, /*data=*/SDA, /*reset=*/U8X8_PIN_NONE)
+display(U8G2_R0, /*clock=*/SCL, /*data=*/SDA, /*reset=*/U8X8_PIN_NONE),
 #else
-display(0x3c, SDA, SCL, GEOMETRY_128_32) 
+display(0x3c, SDA, SCL, GEOMETRY_128_32),
 #endif
+messageText(""), textPosition(0)
 {
 
 }
@@ -47,10 +48,11 @@ void CPOledDisplay::setStatus(String text) {
 }
 
 void CPOledDisplay::updatePagerMessage(String sender, String receiver, String message, String textPixelBase64, int textCount) {
+  messageText = "发送人：" + sender + " 消息：" + message;
 #if USE_U8G2
   display.clearBuffer();
   display.setCursor(0, 24);
-  display.print(message);    // Chinese "Hello World" 
+  display.print(messageText);    // Chinese "Hello World" 
   display.sendBuffer();
 #else
   display.clear();
@@ -66,4 +68,33 @@ void CPOledDisplay::drawTextPixel(int x, int y, int width, int height, const uin
 
 void CPOledDisplay::drawTest(const unsigned char* data, int dataLen, int textCount) {
 
+}
+
+void CPOledDisplay::marquee() {
+  if (textPosition < messageText.length()) {
+    for (int i = 0; i < messageText.length(); i++) {
+      String text = messageText.substring(i);
+#if USE_U8G2
+      display.clearBuffer();
+      display.setCursor(0, 24);
+      display.print(text);
+      display.sendBuffer();
+#else
+      display.clear();
+      display.drawString(0, 0, text);
+      display.display();
+#endif
+      delay(200);
+    }
+#if USE_U8G2
+      display.clearBuffer();
+      display.setCursor(0, 24);
+      display.print(messageText);
+      display.sendBuffer();
+#else
+      display.clear();
+      display.drawString(0, 0, messageText);
+      display.display();
+#endif
+  }
 }

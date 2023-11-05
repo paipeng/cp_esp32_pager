@@ -30,11 +30,14 @@ public:
   void updatePagerMessage(String sender, String receiver, String message, String textPixelBase64, int textCount);
   void drawTextPixel(int x, int y, int width, int height, const uint16_t* textPixels);
   void drawTest(const unsigned char* data, int dataLen, int textCount);
+  void marquee();
 private:
 #ifdef USE_U8G2
   U8G2_SSD1306_128X32_UNIVISION_F_SW_I2C display;
 #else
-  SSD1306Wire display;  
+  SSD1306Wire display;
 #endif
+  String messageText;
+  int textPosition;
 };
 #endif
