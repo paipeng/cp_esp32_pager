@@ -74,6 +74,11 @@ void loop(){
   mqtt.loop();
   int b = button.readButton();
   if (b != 0) {
-    beep();
+    if ((b & 1) == 1) {
+      beep();
+    } else if ((b >> 1 & 1) == 1) {
+      display.marquee();
+      beep();
+    }
   }
 }
