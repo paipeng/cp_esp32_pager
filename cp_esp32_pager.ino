@@ -22,6 +22,7 @@ void mqtt_callback_display(String text) {
 
 void mqtt_callback_pager_message(String sender, String receiver, String message, String textPixelBase64, int textCount) {
   Serial.println("mqtt_callback_pager_message");
+  beep();
   display.updatePagerMessage(sender, receiver, message, textPixelBase64, textCount);
 }
 
@@ -62,7 +63,8 @@ void setup(){
   mqtt.addDisplayCallback(&mqtt_callback_display);
   mqtt.addPagerCallback(&mqtt_callback_pager_message);
   mqtt.connect(MQTT_BROKER, MQTT_PORT);
-  
+  beep();
+  beep();
 }
 
 void loop(){
