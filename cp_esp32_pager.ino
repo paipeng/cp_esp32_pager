@@ -9,7 +9,7 @@
 #include <SD.h>
 #define SDCARA_CS           0
 
-#define CP_GPIO_BEEP 18
+#define CP_GPIO_BEEP 25
 
 
 CPOledDisplay display;
